@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakhi Safe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- App Container -->
+    <div id="app-container">
+        
+        <!-- Auth Section -->
+        <section id="auth-section" class="active-section">
+            <div class="auth-card">
+                <h1>🌸 Sakhi Safe</h1>
+                <p>Your personal safety companion</p>
+                
+                <div class="input-group">
+                    <label for="userName">Full Name</label>
+                    <input type="text" id="userName" placeholder="Enter your name">
+                </div>
+                
+                <div class="input-group">
+                    <label for="userPhone">Phone Number</label>
+                    <input type="tel" id="userPhone" placeholder="Enter your phone (+91...)">
+                </div>
+
+                <div class="input-group">
+                    <label for="userLanguage">Alert Message Language</label>
+                    <select id="userLanguage">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi (हिंदी)</option>
+                        <option value="Marathi">Marathi (मराठी)</option>
+                    </select>
+                </div>
+
+                <button id="loginBtn" class="primary-btn">Join / Login</button>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Section -->
+        <section id="main-section" class="hidden">
+            <header>
+                <h2>🌸 Sakhi Safe</h2>
+                <button id="logoutBtn" class="text-btn">Logout</button>
+            </header>
+
+            <div class="status-card">
+                <p>Welcome, <span id="display-name">User</span>!</p>
+                <p class="subtitle">Shake phone or press button for SOS</p>
+                <button id="enableShakeBtn" class="secondary-btn" style="margin-top: 10px; font-size: 0.85rem; padding: 5px 10px; display: none;">Enable Shake Detection</button>
+                <div id="location-status" class="subtitle" style="margin-top: 5px; color: #ff6b81; font-weight: 600;"></div>
+            </div>
+
+            <!-- SOS Button -->
+            <div class="sos-container">
+                <button id="sosBtn" class="sos-btn">SOS</button>
+            </div>
+
+            <!-- Contacts Section -->
+            <div class="contacts-section">
+                <h3>Trusted Contacts</h3>
+                <div id="contacts-list" class="contacts-list">
+                    <!-- Contact Cards will appear here -->
+                </div>
+                
+                <div class="add-contact-form">
+                    <input type="tel" id="newContactPhone" placeholder="Contact Phone (+91...)">
+                    <button id="addContactBtn" class="secondary-btn">Add</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Countdown Modal -->
+        <div id="countdown-modal" class="hidden modal">
+            <div class="modal-content">
+                <h2 style="color: #ff4757; font-size: 1.5rem;">🚨 SOS Triggered! 🚨</h2>
+                <p>Sending alert and location to contacts in:</p>
+                <div id="countdown-timer">5</div>
+                <button id="cancelSosBtn" class="cancel-btn">Cancel Alert</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Alarm Sound (Spaceship alarm, free sound) -->
+    <audio id="sirenSound" src="https://actions.google.com/sounds/v1/alarms/spaceship_alarm.ogg" preload="auto"></audio>
+
+    <!-- Logic -->
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
