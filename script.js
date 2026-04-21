@@ -201,6 +201,70 @@ window.removeContact = async function (contact) {
     }
 };
 
+let recognition;
+
+function startVoiceDetection() {
+    if (!('webkitSpeechRecognition' in window)) return;
+
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = "en-IN";
+
+    recognition.onresult = (event) => {
+        const text = event.results[event.results.length - 1][0].transcript.toLowerCase();
+
+        if (
+            text.includes("help") ||
+            text.includes("save me") ||
+            text.includes("danger")
+        ) {
+            showToast("Voice distress detected!", "error");
+            triggerSOS();
+        }
+    };
+
+    recognition.onerror = () => {
+        recognition.stop();
+        setTimeout(startVoiceDetection, 2000);
+    };
+
+    recognition.start();
+}
+startVoiceDetection();
+window.triggerFakeCall = function () {
+    const audio = new Audio("https://actions.google.com/sounds/v1/alarms/phone_alerts_and_rings.ogg");
+    audio.play();
+
+    const fakeScreen = document.createElement("div");
+    fakeScreen.style = `
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:black;
+        color:white;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        z-index:9999;
+    `;
+
+    fakeScreen.innerHTML = `
+        <h1>Incoming Call</h1>
+        <h2>Mom ❤️</h2>
+        <button onclick="this.parentElement.remove()">Accept</button>
+    `;
+
+    document.body.appendChild(fakeScreen);
+};
+
+if (speed > 30) {
+    showToast("Sudden movement detected!", "error");
+    triggerSOS();
+}
+
 function renderContacts() {
     contactsList.innerHTML = '';
     const contacts = currentUser.contacts || [];
