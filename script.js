@@ -1,6 +1,6 @@
 import { database } from './firebase-config.js';
 import { ref, set, get, child, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
+let isShakeEnabled = false;
 // DOM Elements
 const authSection = document.getElementById('auth-section');
 const mainSection = document.getElementById('main-section');
@@ -346,18 +346,16 @@ let lastShakeTime = 0;
 // Setup iOS Shake Permission Button
 if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
     enableShakeBtn.classList.remove('hidden');
-    enableShakeBtn.addEventListener('click', () => {
-        DeviceMotionEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    enableShakeBtn.classList.add('hidden');
-                    showToast("Shake detection is now active.", "success");
-                } else {
-                    showToast("Permission denied. Shake to SOS will not work.", "error");
-                }
-            })
-            .catch(console.error);
-    });
+enableShakeBtn.addEventListener('click', () => {
+    DeviceMotionEvent.requestPermission()
+        .then(permissionState => {
+            if (permissionState === 'granted') {
+                isShakeEnabled = true; // ✅ ADD THIS
+                enableShakeBtn.classList.add('hidden');
+                showToast("Shake detection is now active.", "success");
+            }
+        });
+});
 }
 
 // Modern iOS devices require explicit permission for DeviceMotion, 
