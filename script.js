@@ -339,7 +339,7 @@ let lastX = null, lastY = null, lastZ = null;
 let lastUpdate = 0;
 
 // Increased threshold and added counter for INTENSIVE shake detection
-const SHAKE_THRESHOLD = 30; // High speed required
+const SHAKE_THRESHOLD = 1500; // Requires strong, intentional shaking (e.g., ~1.5g delta over 100ms)
 let shakeCount = 0;
 let lastShakeTime = 0;
 
@@ -377,15 +377,15 @@ window.addEventListener('devicemotion', (event) => {
             const speed = Math.abs(current.x + current.y + current.z - lastX - lastY - lastZ) / diffTime * 10000;
 
             if (speed > SHAKE_THRESHOLD) {
-                // If it's been more than 1.5s since the last intense movement, reset the counter
-                if (currTime - lastShakeTime > 1500) {
+                // If it's been more than 2s since the last intense movement, reset the counter
+                if (currTime - lastShakeTime > 2000) {
                     shakeCount = 0;
                 }
                 shakeCount++;
                 lastShakeTime = currTime;
 
-                // Require at least 4 consecutive high-intensity movements to count as an "intensive shake"
-                if (shakeCount >= 4) {
+                // Require at least 3 consecutive high-intensity movements to count as an "intensive shake"
+                if (shakeCount >= 3) {
                     console.log("Intensive device shake detected! Triggering SOS.");
                     triggerSOS();
                     shakeCount = 0;
